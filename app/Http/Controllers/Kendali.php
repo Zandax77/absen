@@ -109,7 +109,7 @@ class Kendali extends Controller
             $data = Siswa::where('kelas',$kelas)->get();
             $tgl = date('d/m/Y');
             $absen = Absen::where('tgl',$tgl)->where('absens.kelas',$kelas)
-                ->join('siswas', 'siswas.nisn','=','absens.nisn')
+                ->join('siswas', 'siswas.nis','=','absens.nis')
                 ->select('siswas.nama','absens.ket')
                 ->get();
             return view('absenKelas',['data'=>$data],['absen'=>$absen]);
@@ -127,15 +127,19 @@ class Kendali extends Controller
         $ket = $request->ket;
         $opr = $request->session()->get('opr');
 
-        $data = Absen::where('nisn',$nis)->where('tgl',$tgl)->count();
+        if($nis==''){
+            return redirect('absenKelas');
+        }
+        $data = Absen::where('nis',$nis)->where('tgl',$tgl)->count();
     	if($data==0){
         	Absen::create([
             'tgl'=>$tgl,
             'kelas'=>$kelas,
-            'nisn'=>$nis,
+            'nis'=>$nis,
             'ket'=>$ket,
             'opr'=>$opr
         	]);
+        	
         return redirect('absenKelas');
         }else{
         	echo "Siswa tersebut telah tercatat, jika terjadi salah catat hubungi <b>walikelas</b> untuk perbaikan";        	
@@ -157,12 +161,15 @@ class Kendali extends Controller
         $ket = $request->ket;
         $opr = $request->session()->get('opr');
 
-		 $data = Absen::where('nisn',$nis)->where('tgl',$tgl)->count();
+		if($nis==''){
+            return redirect('infoWali');
+        }
+		 $data = Absen::where('nis',$nis)->where('tgl',$tgl)->count();
     	if($data==0){
         	Absen::create([
             'tgl'=>$tgl,
             'kelas'=>$kelas,
-            'nisn'=>$nis,
+            'nis'=>$nis,
             'ket'=>$ket,
             'opr'=>$opr
         	]);
@@ -171,14 +178,6 @@ class Kendali extends Controller
         	echo "<center>Siswa tersebut telah tercatat, periksa kembali untuk perbaikan</center>";        	
         }        
     
-    // Absen::create([
-    //         'tgl'=>$tgl,
-    //         'kelas'=>$kelas,
-    //         'nisn'=>$nis,
-    //         'ket'=>$ket,
-    //         'opr'=>$opr
-    //     ]);
-        
     }
 
     //walikelas
@@ -242,13 +241,21 @@ class Kendali extends Controller
         $kelas = $request->session()->get('kelas');
         $tgl = date('d/m/Y');
         $data = Absen::where('absens.kelas',$kelas)->where('tgl',$tgl)
-            ->join('siswas','siswas.nisn','=','absens.nisn')
+            ->join('siswas','siswas.nis','=','absens.nis')
             ->select('absens.id','siswas.nama','absens.ket')
             ->get();
 
         $siswa = Siswa::where('kelas',$kelas)->get();
+        
+        if($request->session('opr')==""){
+            return redirect('wali');
+         }
+        else{
+            //return redirect('absenKelas');
+            return view('infoWali',['absen'=>$data,'data'=>$siswa]);
+        }
 
-        return view('infoWali',['absen'=>$data,'data'=>$siswa]);
+        
     }
 
     public function hapusAbsen(Request $request,$id){
@@ -279,6 +286,10 @@ class Kendali extends Controller
     public function rekapHarian(){
     	date_default_timezone_set('Asia/Jakarta');
         $sekarang = date('d/m/Y');
+        
+        
+        //$nihil = request()->input('nihil');
+        $nihil = 0;
 
         //kelas X RPL
         $XRPL = Siswa::where('kelas','like','XRP'.'%')->count();
@@ -286,15 +297,24 @@ class Kendali extends Controller
         $xRPLs = Absen::where('kelas','like','XRP'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
         $xRPLi = Absen::where('kelas','like','XRP'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-        $XRPL_hadir = $XRPL-($xRPLa+$xRPLi+$xRPLs);
-
+        if($nihil==1||$xRPLa>0||$xRPLs>0||$xRPLi>0){
+            $XRPL_hadir = $XRPL-($xRPLa+$xRPLi+$xRPLs);    
+        }else{
+            $XRPL_hadir = 0;
+        }
+        
         //kelas X DKV
         $xDKV = Siswa::where('kelas','like','XDKV'.'%')->count();
         $xDKVa = Absen::where('kelas','like','XDK'.'%')->where('ket','A')->where('tgl',$sekarang)->count();
         $xDKVs = Absen::where('kelas','like','XDK'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
         $xDKVi = Absen::where('kelas','like','XDK'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-        $XDKV_hadir = $xDKV-($xDKVa+$xDKVi+$xDKVs);
+        if($nihil==1||$xDKVa>0||$xDKVs>0||$xDKVi>0){
+            $XDKV_hadir = $xDKV-($xDKVa+$xDKVi+$xDKVs);    
+        }else{
+            $XDKV_hadir = 0;
+        }
+        
 
         //kelas X KKBT
         $XKKBT = Siswa::where('kelas','like','XKK'.'%')->count();
@@ -302,7 +322,12 @@ class Kendali extends Controller
         $xKKBTs = Absen::where('kelas','like','XKK'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
         $xKKBTi = Absen::where('kelas','like','XKK'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-        $XKKBT_hadir = $XKKBT-($xKKBTa+$xKKBTi+$xKKBTs);
+        if($nihil==1||$xKKBTa>0||$xKKBTs>0||$xKKBTi>0){
+            $XKKBT_hadir = $XKKBT-($xKKBTa+$xKKBTi+$xKKBTs);    
+        }else{
+            $XKKBT_hadir = 0;
+        }
+        
 
         //kelas X MP
         $XMP = Siswa::where('kelas','like','XMP'.'%')->count();
@@ -310,7 +335,12 @@ class Kendali extends Controller
         $xMPs = Absen::where('kelas','like','XMP'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
         $xMPi = Absen::where('kelas','like','XMP'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-        $XMP_hadir = $XMP-($xMPa+$xMPi+$xMPs);
+        if($nihil==1||$xMPa>0||$xMPs>0||$xMPi>0){
+            $XMP_hadir = $XMP-($xMPa+$xMPi+$xMPs);    
+        }else{
+            $XMP_hadir = 0;
+        }
+        
 
         //kelas X BD
         $XBD= Siswa::where('kelas','like','XBD'.'%')->count();
@@ -318,7 +348,12 @@ class Kendali extends Controller
         $xBDs = Absen::where('kelas','like','XBD'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
         $xBDi = Absen::where('kelas','like','XBD'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-        $XBD_hadir = $XBD-($xBDa+$xBDi+$xBDs);
+        if($nihil==1||$xBDa>0||$xBDs>0||$xBDi>0){
+            $XBD_hadir = $XBD-($xBDa+$xBDi+$xBDs);    
+        }else{
+            $XBD_hadir = 0;
+        }
+        
 
         //kelas X AK
         $XAK = Siswa::where('kelas','like','XAK'.'%')->count();
@@ -326,7 +361,12 @@ class Kendali extends Controller
         $xAKs = Absen::where('kelas','like','XAK'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
         $xAKi = Absen::where('kelas','like','XAK'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-        $XAK_hadir = $XAK-($xAKa+$xAKi+$xAKs);
+        if($nihil==1||$xAKa>0||$xAKs>0||$xAKi>0){
+            $XAK_hadir = $XAK-($xAKa+$xAKi+$xAKs);    
+        }else{
+            $XAK_hadir = 0;
+        }
+        
 
         //kelas XI
 
@@ -336,7 +376,12 @@ class Kendali extends Controller
          $xiRPLs = Absen::where('kelas','like','XIRP'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
          $xiRPLi = Absen::where('kelas','like','XIRP'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-         $XIRPL_hadir = $XIRPL-($xiRPLa+$xiRPLi+$xiRPLs);
+         if($nihil==1||$xiRPLa>0||$xiRPLs>0||$xiRPLi>0){
+            $XIRPL_hadir = $XIRPL-($xiRPLa+$xiRPLi+$xiRPLs);    
+         }else{
+            $XIRPL_hadir = 0;
+         }
+         
 
          //kelas XI DKV
          $XIDKV = Siswa::where('kelas','like','XIDKV'.'%')->count();
@@ -344,7 +389,12 @@ class Kendali extends Controller
          $xiDKVs = Absen::where('kelas','like','XIDK'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
          $xiDKVi = Absen::where('kelas','like','XIDK'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-         $XIDKV_hadir = $XIDKV-($xiDKVa+$xiDKVi+$xiDKVs);
+         if($nihil==1||$xiDKVa>0||$xiDKVs>0||$xiDKVi>0){
+            $XIDKV_hadir = $XIDKV-($xiDKVa+$xiDKVi+$xiDKVs);    
+         }else{
+             $XIDKV_hadir = 0;
+         }
+         
 
          //kelas XI KKBT
          $xiKKBT = Siswa::where('kelas','like','XIKK'.'%')->count();
@@ -352,7 +402,13 @@ class Kendali extends Controller
          $xiKKBTs = Absen::where('kelas','like','XIKK'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
          $xiKKBTi = Absen::where('kelas','like','XIKK'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-         $xiKKBT_hadir = $xiKKBT-($xiKKBTa+$xiKKBTi+$xiKKBTs);
+         $nihil = 0;
+         if($nihil==1||$xiKKBTa>0||$xiKKBTs>0||$xiKKBTi>0){
+            $xiKKBT_hadir = $xiKKBT-($xiKKBTa+$xiKKBTi+$xiKKBTs);    
+         }else{
+            $xiKKBT_hadir = 0;
+         }
+         
 
          //kelas XI MP
          $XIMP = Siswa::where('kelas','like','XIMP'.'%')->count();
@@ -360,15 +416,25 @@ class Kendali extends Controller
          $xiMPs = Absen::where('kelas','like','XIMP'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
          $xiMPi = Absen::where('kelas','like','XIMP'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-         $XIMP_hadir = $XIMP-($xiMPa+$xiMPi+$xiMPs);
+         if($nihil==1|| $xiMPa>0||$xiMPs>0||$xiMPi>0){
+            $XIMP_hadir = $XIMP-($xiMPa+$xiMPi+$xiMPs);    
+         }else{
+            $XIMP_hadir = 0;
+         }
+         
 
-         //kelas XI BR
-         $XIBR= Siswa::where('kelas','like','XIBR'.'%')->count();
-         $xiBRa = Absen::where('kelas','like','XIBR'.'%')->where('ket','A')->where('tgl',$sekarang)->count();
-         $xiBRs = Absen::where('kelas','like','XIBR'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
-         $xiBRi = Absen::where('kelas','like','XIBR'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
+         //kelas XI BD
+         $XIBD= Siswa::where('kelas','like','XIBD'.'%')->count();
+         $xiBDa = Absen::where('kelas','like','XIBD'.'%')->where('ket','A')->where('tgl',$sekarang)->count();
+         $xiBDs = Absen::where('kelas','like','XIBD'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
+         $xiBDi = Absen::where('kelas','like','XIBD'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-         $XIBR_hadir = $XIBR-($xiBRa+$xiBRi+$xiBRs);
+         if($nihil==1||$xiBDa>0||$xiBDs>0||$xiBDi>0){
+            $XIBD_hadir = $XIBD-($xiBDa+$xiBDi+$xiBDs);    
+         }else{
+            $XIBD_hadir = 0;
+         }
+         
 
          //kelas XI AK
          $XIAK = Siswa::where('kelas','like','XIAK'.'%')->count();
@@ -376,7 +442,13 @@ class Kendali extends Controller
          $xiAKs = Absen::where('kelas','like','XIAK'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
          $xiAKi = Absen::where('kelas','like','XIAK'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-         $XIAK_hadir = $XIAK-($xiAKa+$xiAKi+$xiAKs);
+         //$nihil = 0;
+         if($nihil==1||$xiAKa>0||$xiAKs>0||$xiAKi>0){
+            $XIAK_hadir = $XIAK-($xiAKa+$xiAKi+$xiAKs);    
+         }else{
+            $XIAK_hadir = 0;
+         }
+         
 
 
          //kelas XII
@@ -387,15 +459,26 @@ class Kendali extends Controller
         $xiiRPLs = Absen::where('kelas','like','XIIRP'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
         $xiiRPLi = Absen::where('kelas','like','XIIRP'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-        $XIIRPL_hadir = $XIIRPL-($xiiRPLa+$xiiRPLi+$xiiRPLs);
+        $nihil = 0;
+        if($nihil==1||$xiiRPLa>0||$xiiRPLi>0||$xiiRPLs>0){
+            $XIIRPL_hadir = $XIIRPL-($xiiRPLa+$xiiRPLi+$xiiRPLs);
+        }
+        else{
+            $XIIRPL_hadir = 0;
+        }
 
-        //kelas XII MM
-        $XIIMM = Siswa::where('kelas','like','XIIMM'.'%')->count();
-        $xiiMMa = Absen::where('kelas','like','XIIMM'.'%')->where('ket','A')->where('tgl',$sekarang)->count();
-        $xiiMMs = Absen::where('kelas','like','XIIMM'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
-        $xiiMMi = Absen::where('kelas','like','XIIMM'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
+        //kelas XII DKV
+        $XIIDKV = Siswa::where('kelas','like','XIIDKV'.'%')->count();
+        $xiiDKVa = Absen::where('kelas','like','XIIDKV'.'%')->where('ket','A')->where('tgl',$sekarang)->count();
+        $xiiDKVs = Absen::where('kelas','like','XIIDKV'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
+        $xiiDKVi = Absen::where('kelas','like','XIIDKV'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-        $XIIMM_hadir = $XIIMM-($xiiMMa+$xiiMMi+$xiiMMs);
+        if($nihil==1||$xiiDKVa>0||$xiiDKVs>0||$xiiDKVi>0){
+            $XIIDKV_hadir = $XIIDKV-($xiiDKVa+$xiiDKVi+$xiiDKVs);    
+        }else{
+            $XIIDKV_hadir = 0;
+        }
+        
 
         //kelas XII KKBT
         $XIIKKBT = Siswa::where('kelas','like','XIIKK'.'%')->count();
@@ -403,23 +486,42 @@ class Kendali extends Controller
         $xiiKKBTs = Absen::where('kelas','like','XIIKK'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
         $xiiKKBTi = Absen::where('kelas','like','XIIKK'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-        $XIIKKBT_hadir = $XIIKKBT-($xiiKKBTa+$xiiKKBTi+$xiiKKBTs);
+        $nihil = 0;
+        if($nihil==1){
+            $XIIKKBT_hadir = $XIIKKBT-($xiiKKBTa+$xiiKKBTi+$xiiKKBTs);
+        }else{
+            $XIIKKBT_hadir = 0;
+        }
+                
+        
+        
+        
 
-        //kelas XII OTKP
-        $XIIOT = Siswa::where('kelas','like','XIIOT'.'%')->count();
-        $xiiOTa = Absen::where('kelas','like','XIIOT'.'%')->where('ket','A')->where('tgl',$sekarang)->count();
-        $xiiOTs = Absen::where('kelas','like','XIIOT'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
-        $xiiOTi = Absen::where('kelas','like','XIIOT'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
+        //kelas XII MP/OTKP
+        $XIIMP = Siswa::where('kelas','like','XIIMP'.'%')->count();
+        $xiiMPa = Absen::where('kelas','like','XIIMP'.'%')->where('ket','A')->where('tgl',$sekarang)->count();
+        $xiiMPs = Absen::where('kelas','like','XIIMP'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
+        $xiiMPi = Absen::where('kelas','like','XIIMP'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-        $XIIOT_hadir = $XIIOT-($xiiOTa+$xiiOTi+$xiiOTs);
+        if($nihil==1||$xiiMPa>0||$xiiMPs>0||$xiiMPi>0){
+            $XIIMP_hadir = $XIIMP-($xiiMPa+$xiiMPi+$xiiMPs);    
+        }else{
+            $XIIMP_hadir = 0;
+        }
+        
 
         //kelas XII BDP
-        $XIIBDP= Siswa::where('kelas','like','XIIBDP'.'%')->count();
-        $xiiBDPa = Absen::where('kelas','like','XIIBDP'.'%')->where('ket','A')->where('tgl',$sekarang)->count();
-        $xiiBDPs = Absen::where('kelas','like','XIIBDP'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
-        $xiiBDPi = Absen::where('kelas','like','XIIBDP'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
+        $XIIBD= Siswa::where('kelas','like','XIIBD'.'%')->count();
+        $xiiBDa = Absen::where('kelas','like','XIIBD'.'%')->where('ket','A')->where('tgl',$sekarang)->count();
+        $xiiBDs = Absen::where('kelas','like','XIIBD'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
+        $xiiBDi = Absen::where('kelas','like','XIIBD'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-        $XIIBDP_hadir = $XIIBDP-($xiiBDPa+$xiiBDPi+$xiiBDPs);
+        if($nihil==1||$xiiBDa>0||$xiiBDs>0||$xiiBDi>0){
+            $XIIBD_hadir = $XIIBD-($xiiBDa+$xiiBDi+$xiiBDs);    
+        }else{
+            $XIIBD_hadir = 0;
+        }
+        
 
         //kelas XII AKL
         $XIIAK = Siswa::where('kelas','like','XIIAK'.'%')->count();
@@ -427,13 +529,20 @@ class Kendali extends Controller
         $xiiAKs = Absen::where('kelas','like','XIIAK'.'%')->where('ket','S')->where('tgl',$sekarang)->count();
         $xiiAKi = Absen::where('kelas','like','XIIAK'.'%')->where('ket','I')->where('tgl',$sekarang)->count();
 
-        $XIIAK_hadir = $XIIAK-($xiiAKa+$xiiAKi+$xiiAKs);
+        if($nihil==1||$xiiAKa>0||$xiiAKs>0||$xiiAKi>0){
+            $XIIAK_hadir = $XIIAK-($xiiAKa+$xiiAKi+$xiiAKs);    
+        }else{
+            $XIIAK_hadir = 0;
+        }
+        
 
         $siswa = Siswa::count();
         $totalAlpa = Absen::where('ket','A')->where('tgl',$sekarang)->count();
         $totalIzin = Absen::where('ket','I')->where('tgl',$sekarang)->count();
         $totalSakit = Absen::where('ket','S')->where('tgl',$sekarang)->count();
-        $totalHadir = $siswa-($totalAlpa+$totalIzin+$totalSakit);
+        
+        //$totalHadir = $siswa-($totalAlpa+$totalIzin+$totalSakit);
+        $totalHadir = $XRPL_hadir+$XDKV_hadir+$XAK_hadir+$XMP_hadir+$XBD_hadir+$XKKBT_hadir+$XIRPL_hadir+$XIDKV_hadir+$XIAK_hadir+$XIMP_hadir+$XIBD_hadir+$xiKKBT_hadir+$XIIRPL_hadir+$XIIDKV_hadir+$XIIAK_hadir+$XIIMP_hadir+$XIIBD_hadir+$XIIKKBT_hadir;
 
         return view('info',[
             'xrpl'=>$XRPL_hadir,'xrplA'=>$xRPLa,'xrplI'=>$xRPLi,'xrplS'=>$xRPLs,
@@ -443,18 +552,18 @@ class Kendali extends Controller
             'xbd'=>$XBD_hadir,'xbdA'=>$xBDa,'xbdI'=>$xBDi,'xbdS'=>$xBDs,
             'xak'=>$XAK_hadir,'xakA'=>$xAKa,'xakI'=>$xAKi,'xakS'=>$xAKs,
             'xirpl'=>$XIRPL_hadir,'xirplA'=>$xiRPLa,'xirplI'=>$xiRPLi,'xirplS'=>$xiRPLs,
-            'xidkv'=>$XIDKV_hadir,'xidkvA'=>$xiDKVa,'xidkvI'=>$xDKVi,'xidkvS'=>$xDKVs,
-            'xikkbt'=>$xiKKBT_hadir,'xikkbtA'=>$xiKKBTa,'xikkbtI'=>$xKKBTi,'xikkbtS'=>$xKKBTs,
+            'xidkv'=>$XIDKV_hadir,'xidkvA'=>$xiDKVa,'xidkvI'=>$xDKVi,'xidkvS'=>$xiDKVs,
+            'xikkbt'=>$xiKKBT_hadir,'xikkbtA'=>$xiKKBTa,'xikkbtI'=>$xiKKBTi,'xikkbtS'=>$xiKKBTs,
             'ximp'=>$XIMP_hadir,'ximpA'=>$xMPa,'ximpI'=>$xiMPi,'ximpS'=>$xiMPs,
-            'xibr'=>$XIBR_hadir,'xibrA'=>$xiBRa,'xibrI'=>$xiBRi,'xibrS'=>$xiBRs,
+            'xibd'=>$XIBD_hadir,'xibdA'=>$xiBDa,'xibdI'=>$xiBDi,'xibdS'=>$xiBDs,
             'xiak'=>$XIAK_hadir,'xiakA'=>$xiAKa,'xiakI'=>$xiAKi,'xiakS'=>$xiAKs,
             'xiirpl'=>$XIIRPL_hadir,'xiirplA'=>$xiiRPLa,'xiirplI'=>$xiiRPLi,'xiirplS'=>$xiiRPLs,
-            'xiimm'=>$XIIMM_hadir,'xiimmA'=>$xiiMMa,'xiimmI'=>$xiiMMi,'xiimmS'=>$xiiMMs,
+            'xiiDKV'=>$XIIDKV_hadir,'xiiDKVA'=>$xiiDKVa,'xiiDKVI'=>$xiiDKVi,'xiiDKVS'=>$xiiDKVs,
             'xiikkbt'=>$XIIKKBT_hadir,'xiikkbtA'=>$xiiKKBTa,'xiikkbtI'=>$xiiKKBTi,'xiikkbtS'=>$xiiKKBTs,
-            'xiiot'=>$XIIOT_hadir,'xiiotA'=>$xiiOTa,'xiiotI'=>$xiiOTi,'xiiotS'=>$xiiOTs,
-            'xiibd'=>$XIIBDP_hadir,'xiibdpA'=>$xiiBDPa,'xiibdpI'=>$xiiBDPi,'xiibdpS'=>$xiiBDPs,
+            'xiimp'=>$XIIMP_hadir,'xiimpA'=>$xiiMPa,'xiimpI'=>$xiiMPi,'xiimpS'=>$xiiMPs,
+            'xiibd'=>$XIIBD_hadir,'xiibdA'=>$xiiBDa,'xiibdI'=>$xiiBDi,'xiibdS'=>$xiiBDs,
             'xiiak'=>$XIIAK_hadir,'xiiakA'=>$xiiAKa,'xiiakI'=>$xiiAKi,'xiiakS'=>$xiiAKs,
-            'xiiot'=>$XIIOT_hadir,'xiiotA'=>$xiiOTa,'xiiotI'=>$xiiOTi,'xiiotS'=>$xiiOTs,
+            //'xiiot'=>$XIIOT_hadir,'xiiotA'=>$xiiOTa,'xiiotI'=>$xiiOTi,'xiiotS'=>$xiiOTs,
             'xbd'=>$XBD_hadir,'xbdA'=>$xBDa,'xbdI',$xBDi,'xbdS'=>$xBDs,
             'hadir'=>$totalHadir,
             'S'=>$totalSakit,
@@ -467,12 +576,11 @@ class Kendali extends Controller
 	public function detailAbsen(){
          date_default_timezone_set('Asia/Jakarta');
         $sekarang = date('d/m/Y');
-        $data = Absen::join('siswas','siswas.nisn','=','absens.nisn')
+        $data = Absen::join('siswas','siswas.nis','=','absens.nis')
             ->select('siswas.nama','siswas.kelas','absens.ket','absens.opr')->orderBy('absens.kelas','asc')
             ->where('absens.tgl',$sekarang)
             ->get();
             return view('generalAbsen',['data'=>$data]);
     }
-
-
+    
 }

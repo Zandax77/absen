@@ -3,7 +3,9 @@
 
 <div class="container">
     <h2>Detail Laporan Hasil Pencatatan Presensi Siswa</h2>
-    <h4>Hari ini tanggal : <?php echo date('d-m-Y');?></h4>
+    <h4>Hari ini tanggal : {{ date('d-m-Y') }}</h4>
+
+    
     <table class="table table-bordered table-striped datatable">
         <thead>
             <tr>
@@ -20,12 +22,14 @@
                 <td>{{$no++}}</td>
                 <td>{{$isi->nama}}</td>
                 <td>{{$isi->kelas}}</td>
-                <td>{{$isi->ket}}</td>
+                <td align="center">{{$isi->ket}}</td>
         		<td>{{$isi->opr}}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
 </div>
+
+
 
 @endsection

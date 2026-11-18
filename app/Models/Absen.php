@@ -9,5 +9,5 @@ class Absen extends Model
 {
     use HasFactory;
     protected $table = 'absens';
-    protected $fillable = ['tgl','kelas','nisn','ket','opr'];
+    protected $fillable = ['tgl','kelas','nis','ket','opr'];
 }

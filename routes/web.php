@@ -34,5 +34,6 @@ Route::post('updateAbsen/{id}',[Kendali::class,'ubahAbsen']);
 
 Route::get('info',[Kendali::class,'info']);
 
+Route::post('rekapHarian',[Kendali::class,'rekapHarian']);
 Route::get('rekapHarian',[Kendali::class,'rekapHarian']);
 Route::get('generalAbsen',[Kendali::class,'detailAbsen']);
