@@ -3,8 +3,8 @@
 <div class="container py-4">
 
   <!-- Top Header / Bar -->
-  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pb-3 mb-4 border-bottom">
-    <div class="d-flex align-items-center gap-3">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pb-3 mb-4 border-bottom dashboard-header">
+    <div class="d-flex align-items-center gap-2 gap-sm-3">
       <img src="{{asset($school_logo ?? 'images/logo_smk6.png')}}" width="55" height="55" alt="Logo" class="rounded">
       <div>
         <h4 class="fw-bold mb-0 text-dark">{{ $school_name ?? 'SMKN 6 JEMBER' }} &bull; Dashboard Admin</h4>
@@ -13,7 +13,7 @@
         </small>
       </div>
     </div>
-    <div class="d-flex gap-2">
+    <div class="d-flex gap-2 flex-wrap">
       <a href="{{ url('rekapAbsen') }}" target="_blank" class="btn btn-outline-primary btn-sm">
         <i class="bi bi-graph-up me-1"></i> Rekap Realtime
       </a>
@@ -103,7 +103,8 @@
   </div>
 
   <!-- Nav Tabs -->
-  <ul class="nav nav-tabs nav-tabs-bordered mb-4" id="adminTabs" role="tablist">
+  <div style="overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;">
+  <ul class="nav nav-tabs nav-tabs-bordered mb-4 flex-nowrap" id="adminTabs" role="tablist" style="min-width:max-content;">
     <li class="nav-item" role="presentation">
       <button class="nav-link active fw-semibold" id="petugas-tab" data-bs-toggle="tab" data-bs-target="#tab-petugas" type="button" role="tab">
         <i class="bi bi-person-check me-1"></i> Kelola Petugas Kelas
@@ -133,6 +134,7 @@
       </button>
     </li>
   </ul>
+  </div>
 
   <!-- Tab Contents -->
   <div class="tab-content" id="adminTabsContent">
@@ -176,7 +178,7 @@
                       @endif
                     </td>
                     <td class="text-center">
-                      <div class="btn-group btn-group-sm" role="group">
+                      <div class="d-flex flex-column flex-sm-row gap-1 justify-content-center btn-group btn-group-sm" role="group">
                         @if($item->status == 'menunggu')
                           <a href="{{ url('setujui/' . $item->kode) }}" class="btn btn-success" title="Setujui Akun">
                             <i class="bi bi-check-lg me-1"></i> Setujui

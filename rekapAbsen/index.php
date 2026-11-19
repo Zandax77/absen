@@ -266,6 +266,131 @@ body {
 
 }
 
+/* ============================================================
+   MOBILE RESPONSIVE
+============================================================ */
+
+@media (max-width: 575.98px) {
+
+    body { overflow-x: hidden; }
+    .container { padding-left: 12px !important; padding-right: 12px !important; }
+
+    /* Header compact */
+    .container.py-4 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+
+    /* Dashboard title */
+    h2.fw-bold { font-size: 1.25rem !important; }
+    p.text-muted { font-size: 0.78rem !important; }
+
+    /* Header action buttons: grid 3 kolom compact */
+    .header-action-group {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 6px !important;
+        width: 100% !important;
+    }
+    .header-action-group .btn {
+        width: 100% !important;
+        padding: 7px 4px !important;
+        font-size: 0.7rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 2px !important;
+        border-radius: 10px !important;
+        white-space: normal !important;
+        text-align: center !important;
+        line-height: 1.15 !important;
+    }
+    .header-action-group .btn i {
+        font-size: 1.1rem !important;
+        margin: 0 !important;
+    }
+
+    /* Stat cards: 3 kolom horizontal modern */
+    .stat-row {
+        margin-left: -4px !important;
+        margin-right: -4px !important;
+    }
+    .stat-row > [class*="col-"] {
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+        margin-bottom: 8px !important;
+    }
+    .card-summary {
+        border-radius: 12px !important;
+        padding: 10px 4px !important;
+        border-left: none !important;
+        border-top: 3.5px solid !important;
+    }
+    .card-summary.border-warning { border-top-color: #ffc107 !important; }
+    .card-summary.border-success { border-top-color: #198754 !important; }
+    .card-summary.border-danger { border-top-color: #dc3545 !important; }
+
+    .card-summary .d-flex {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 4px !important;
+    }
+    .icon-box {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 15px !important;
+        border-radius: 8px !important;
+        margin: 0 !important;
+    }
+    .card-summary p.small {
+        font-size: 0.62rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.02em !important;
+        margin-bottom: 0 !important;
+    }
+    .card-summary h3 {
+        font-size: 1.3rem !important;
+        font-weight: 800 !important;
+        margin-bottom: 0 !important;
+        line-height: 1.1 !important;
+    }
+
+    /* Bar chart compact */
+    div[style*="height:250px"],
+    div[style*="height:220px"],
+    .main-card div[style] { height: 180px !important; }
+
+    /* Trend + comparison chart */
+    .chart-container-lg { height: 210px !important; }
+
+    /* Main card padding */
+    .main-card.p-4 { padding: 0.9rem !important; border-radius: 14px; }
+    .main-card h6 { font-size: 0.68rem !important; margin-bottom: 0.5rem !important; }
+
+    /* Ranking */
+    .rank-number { width: 26px !important; height: 26px !important; font-size: 0.75rem !important; margin-right: 8px !important; }
+    .rank-item { padding: 7px 0 !important; font-size: 0.82rem !important; }
+
+    /* Rekap result */
+    .rekap-header { padding: 0.9rem !important; border-radius: 14px !important; }
+    .rekap-header h4 { font-size: 0.95rem; }
+    .alert.p-4 { padding: 0.85rem !important; }
+    .alert h5 { font-size: 0.9rem; }
+
+    /* Tables */
+    .table { font-size: 0.8rem; }
+    .table th, .table td { padding: 0.4rem 0.35rem; }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .col-md-4.mb-3 {
+        flex: 0 0 33.3333% !important;
+        max-width: 33.3333% !important;
+    }
+    .icon-box { width: 38px !important; height: 38px !important; font-size: 18px !important; }
+    .card-summary p.small { font-size: 0.7rem !important; }
+    .card-summary h3 { font-size: 1.4rem !important; }
+}
+
 </style>
 
 </head>
@@ -274,16 +399,16 @@ body {
 <body>
 
 
-<div class="container py-5">
+<div class="container py-4 py-sm-5">
 
 
 <!-- ======================================================
      HEADER
 ====================================================== -->
 
-<div class="row align-items-center mb-5">
+<div class="row align-items-center mb-4 mb-sm-5">
 
-    <div class="col-lg-6 mb-3 mb-lg-0">
+    <div class="col-lg-6 mb-2 mb-lg-0">
 
         <h2 class="fw-bold text-dark mb-1">
 
@@ -310,17 +435,15 @@ body {
     </div>
 
 
-    <div class="col-lg-6 text-lg-end
-                d-flex flex-wrap
-                justify-content-lg-end gap-2">
+    <div class="col-lg-6 header-action-group d-flex flex-wrap justify-content-lg-end gap-2 mt-2 mt-lg-0">
 
 
         <!-- HISTORI -->
 
         <a href="/rekapAbsen/histori"
-           class="btn btn-histori px-4 fw-semibold shadow-sm">
+           class="btn btn-histori px-3 fw-semibold shadow-sm">
 
-            <i class="bi bi-clock-history me-2"></i>
+            <i class="bi bi-clock-history me-1"></i>
 
             Histori Absensi
 
@@ -330,11 +453,11 @@ body {
         <!-- REKAP SEMUA KELAS -->
 
         <button
-            class="btn btn-success px-4 fw-bold shadow-sm"
+            class="btn btn-success px-3 fw-bold shadow-sm"
             data-bs-toggle="modal"
             data-bs-target="#rekapSemuaKelasModal">
 
-            <i class="bi bi-people-fill me-2"></i>
+            <i class="bi bi-people-fill me-1"></i>
 
             Rekap Semua Kelas
 
@@ -344,11 +467,11 @@ body {
         <!-- FILTER KELAS -->
 
         <button
-            class="btn btn-primary px-4 fw-bold shadow-sm"
+            class="btn btn-primary px-3 fw-bold shadow-sm"
             data-bs-toggle="modal"
             data-bs-target="#filterModal">
 
-            <i class="bi bi-funnel-fill me-2"></i>
+            <i class="bi bi-funnel-fill me-1"></i>
 
             Filter Laporan
 
@@ -369,22 +492,22 @@ body {
 
     <div class="col-lg-8">
 
-        <div class="row">
+        <div class="row stat-row g-2">
 
 
             <!-- SAKIT -->
 
-            <div class="col-md-4 mb-3">
+            <div class="col-4 col-md-4 mb-3">
 
                 <div class="card card-summary
                             shadow-sm bg-white p-3
                             border-start border-warning border-4">
 
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center gap-2">
 
                         <div class="icon-box
                                     bg-warning-subtle
-                                    text-warning me-3">
+                                    text-warning">
 
                             <i class="bi bi-thermometer-half"></i>
 
@@ -417,17 +540,17 @@ body {
 
             <!-- IZIN -->
 
-            <div class="col-md-4 mb-3">
+            <div class="col-4 col-md-4 mb-3">
 
                 <div class="card card-summary
                             shadow-sm bg-white p-3
                             border-start border-success border-4">
 
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center gap-2">
 
                         <div class="icon-box
                                     bg-success-subtle
-                                    text-success me-3">
+                                    text-success">
 
                             <i class="bi bi-envelope-paper"></i>
 
@@ -460,17 +583,17 @@ body {
 
             <!-- ALPHA -->
 
-            <div class="col-md-4 mb-3">
+            <div class="col-4 col-md-4 mb-3">
 
                 <div class="card card-summary
                             shadow-sm bg-white p-3
                             border-start border-danger border-4">
 
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center gap-2">
 
                         <div class="icon-box
                                     bg-danger-subtle
-                                    text-danger me-3">
+                                    text-danger">
 
                             <i class="bi bi-person-x"></i>
 
@@ -516,7 +639,7 @@ body {
 
             </h6>
 
-            <div style="height:250px">
+            <div style="height:220px">
 
                 <canvas id="todayChart"></canvas>
 

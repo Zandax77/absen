@@ -1,44 +1,46 @@
 @extends('blank')
 @section('isi')
 
-<center>
-    <h1>Kehadiran Siswa</h1>
-    <h3><b>{{ $school_name ?? 'SMKN 6 JEMBER' }}</b></h3><?php date_default_timezone_set('Asia/Jakarta');?>
-    <h5>Tanggal : {{date('d/m/Y')}}</h5>
-</center>
+<div class="container py-3">
+<div class="text-center mb-3">
+    <h1 class="fs-3 fw-bold">Kehadiran Siswa</h1>
+    <h3 class="fs-5"><b>{{ $school_name ?? 'SMKN 6 JEMBER' }}</b></h3><?php date_default_timezone_set('Asia/Jakarta');?>
+    <h5 class="fs-6 text-muted">Tanggal : {{date('d/m/Y')}}</h5>
+</div>
 
 <div class="card">
     <div class="card-body">
       <h5 class="card-title"></h5>
 
-      <!-- Default Tabs -->
-        <ul class="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
-            <li class="nav-item flex-fill" role="presentation">
-            <button class="nav-link w-100" id="rpl-tab" data-bs-toggle="tab" data-bs-target="#rpl-justified" type="button" role="tab" aria-controls="home" aria-selected="true">RPL</button>
+      <!-- Default Tabs — scrollable on mobile -->
+      <div style="overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; margin-bottom:0;">
+        <ul class="nav nav-tabs flex-nowrap" id="myTabjustified" role="tablist" style="min-width:max-content;">
+            <li class="nav-item" role="presentation">
+            <button class="nav-link" id="rpl-tab" data-bs-toggle="tab" data-bs-target="#rpl-justified" type="button" role="tab" aria-controls="home" aria-selected="true">RPL</button>
             </li>
-            <li class="nav-item flex-fill" role="presentation">
-            <button class="nav-link w-100" id="dkv-tab" data-bs-toggle="tab" data-bs-target="#dkv-justified" type="button" role="tab" aria-controls="profile" aria-selected="false">DKV/dkv</button>
+            <li class="nav-item" role="presentation">
+            <button class="nav-link" id="dkv-tab" data-bs-toggle="tab" data-bs-target="#dkv-justified" type="button" role="tab" aria-controls="profile" aria-selected="false">DKV/dkv</button>
             </li>
-            <li class="nav-item flex-fill" role="presentation">
-            <button class="nav-link w-100" id="kkbt-tab" data-bs-toggle="tab" data-bs-target="#kkbt-justified" type="button" role="tab" aria-controls="contact" aria-selected="false">KKBT</button>
+            <li class="nav-item" role="presentation">
+            <button class="nav-link" id="kkbt-tab" data-bs-toggle="tab" data-bs-target="#kkbt-justified" type="button" role="tab" aria-controls="contact" aria-selected="false">KKBT</button>
             </li>
-            <li class="nav-item flex-fill" role="presentation">
-              <button class="nav-link w-100" id="ak-tab" data-bs-toggle="tab" data-bs-target="#ak-justified" type="button" role="tab" aria-controls="home" aria-selected="true">AK/AKL</button>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="ak-tab" data-bs-toggle="tab" data-bs-target="#ak-justified" type="button" role="tab" aria-controls="home" aria-selected="false">AK/AKL</button>
             </li>
-            <li class="nav-item flex-fill" role="presentation">
-              <button class="nav-link w-100" id="mp-tab" data-bs-toggle="tab" data-bs-target="#mp-justified" type="button" role="tab" aria-controls="profile" aria-selected="false">MP/OTKP</button>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="mp-tab" data-bs-toggle="tab" data-bs-target="#mp-justified" type="button" role="tab" aria-controls="profile" aria-selected="false">MP/OTKP</button>
             </li>
-            <li class="nav-item flex-fill" role="presentation">
-              <button class="nav-link w-100" id="bd-tab" data-bs-toggle="tab" data-bs-target="#bd-justified" type="button" role="tab" aria-controls="contact" aria-selected="false">BD/BR</button>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="bd-tab" data-bs-toggle="tab" data-bs-target="#bd-justified" type="button" role="tab" aria-controls="contact" aria-selected="false">BD/BR</button>
             </li>
           </ul>
-      </ul>
+      </div>
 
       <div class="tab-content pt-2" id="myTabjustifiedContent">
         <div class="tab-pane fade" id="rpl-justified" role="tabpanel" aria-labelledby="rpl-tab">
 
             <div class="row" align="center">
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas X</h5>
@@ -75,7 +77,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas XI</h5>
@@ -113,7 +115,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas XII</h5>
@@ -156,7 +158,7 @@
         <div class="tab-pane fade" id="dkv-justified" role="tabpanel" aria-labelledby="dkv-tab">
 
             <div class="row" align="center">
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas X</h5>
@@ -193,7 +195,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas XI</h5>
@@ -231,7 +233,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas XII</h5>
@@ -274,7 +276,7 @@
         <div class="tab-pane fade" id="kkbt-justified" role="tabpanel" aria-labelledby="kkbt-tab">
 
             <div class="row" align="center">
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas X</h5>
@@ -311,7 +313,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas XI</h5>
@@ -349,7 +351,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas XII</h5>
@@ -393,7 +395,7 @@
         <div class="tab-pane fade" id="ak-justified" role="tabpanel" aria-labelledby="ak-tab">
 
             <div class="row" align="center">
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas X</h5>
@@ -430,7 +432,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas XI</h5>
@@ -468,7 +470,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas XII</h5>
@@ -512,7 +514,7 @@
         <div class="tab-pane fade" id="mp-justified" role="tabpanel" aria-labelledby="mp-tab">
 
             <div class="row" align="center">
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas X</h5>
@@ -549,7 +551,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas XI</h5>
@@ -587,7 +589,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas XII</h5>
@@ -630,7 +632,7 @@
         <div class="tab-pane fade" id="bd-justified" role="tabpanel" aria-labelledby="bd-tab">
 
             <div class="row" align="center">
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas X</h5>
@@ -667,7 +669,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas XI</h5>
@@ -705,7 +707,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Kelas XII</h5>
@@ -748,11 +750,11 @@
     </div>
 </div>
 
-<center>
-    <div class="col-lg-10">
+<div class="row justify-content-center mt-3">
+    <div class="col-12 col-lg-10">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Total Absensi Siswa</h5>
+                <h5 class="card-title text-center">Total Absensi Siswa</h5>
 
                 <!-- Pie Chart -->
                 <canvas id="total" style="max-height: 400px;"></canvas>
@@ -782,8 +784,9 @@
                     });
                 });
                 </script>
-                <!-- End Pie CHart -->
+                <!-- End Pie Chart -->
             </div>
         </div>
-</center>
+    </div>
+</div>
 @endsection

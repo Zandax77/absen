@@ -120,11 +120,11 @@
     </div>
 
     <!-- Section Iframe Rekap -->
-    <div class="iframe-container">
+    <div class="iframe-container mt-3">
         <div class="iframe-header">
             <i class="bi bi-graph-up"></i> Rekapitulasi Absensi Keseluruhan
         </div>
-        <iframe src="{{ url('rekapAbsen') }}" frameborder="0" width="100%" height="600px"></iframe>
+        <iframe src="{{ url('rekapAbsen') }}" frameborder="0" width="100%" style="height: clamp(300px, 50vw, 600px); min-height: 300px;"></iframe>
     </div>
 </div>
 

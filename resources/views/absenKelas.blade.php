@@ -20,7 +20,7 @@
         .navbar-custom {
             background: #ffffff;
             border-bottom: 1px solid #e2e8f0;
-            padding: 15px 0;
+            padding: 12px 0;
         }
         .main-card {
             background: white;
@@ -28,10 +28,10 @@
             border-radius: 16px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             overflow: hidden;
-            margin-top: 24px;
+            margin-top: 16px;
         }
         .card-header-custom {
-            padding: 20px;
+            padding: 16px 20px;
             background: white;
             border-bottom: 1px solid #f1f5f9;
         }
@@ -47,7 +47,7 @@
             border-top: none;
         }
         .badge-pill {
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 50px;
             font-weight: 600;
             font-size: 0.75rem;
@@ -59,8 +59,9 @@
 
         .btn-add {
             border-radius: 10px;
-            padding: 10px 20px;
+            padding: 8px 16px;
             font-weight: 600;
+            font-size: 0.875rem;
             transition: all 0.3s;
         }
         .btn-add:hover {
@@ -68,7 +69,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .empty-state {
-            padding: 40px;
+            padding: 40px 20px;
             text-align: center;
             color: #94a3b8;
         }
@@ -76,6 +77,15 @@
             font-size: 3rem;
             display: block;
             margin-bottom: 10px;
+        }
+
+        @media (max-width: 575.98px) {
+            .card-header-custom { padding: 12px 14px; }
+            .card-header-custom h5 { font-size: 0.95rem; }
+            .card-header-custom .text-muted.small { font-size: 0.72rem; }
+            .btn-add { font-size: 0.78rem; padding: 7px 12px; }
+            .table { font-size: 0.82rem; }
+            .table th, .table td { padding: 0.45rem 0.4rem; }
         }
     </style>
 </head>
