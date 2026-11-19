@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Aplikasi Pencatat Kehadiran Siswa Kelas</title>
+  <title>{{ $app_title ?? 'Aplikasi Pencatat Kehadiran Siswa Kelas' }}</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -29,6 +29,62 @@
   <!-- Template Main CSS File -->
   <link href="{{asset('NiceAdmin/assets/css/style.css')}}" rel="stylesheet">
 
+  <!-- Mobile Responsive Custom CSS -->
+  <style>
+    /* ---- Global Mobile Fixes ---- */
+    body { overflow-x: hidden; }
+
+    /* Scrollable nav tabs on mobile */
+    .nav-tabs-scroll-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .nav-tabs-scroll-wrapper::-webkit-scrollbar { display: none; }
+    .nav-tabs-scroll-wrapper .nav-tabs {
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      min-width: max-content;
+    }
+
+    /* Table responsive touch */
+    .table-responsive { -webkit-overflow-scrolling: touch; }
+
+    /* Card padding reduce on mobile */
+    @media (max-width: 575.98px) {
+      .card-body { padding: 1rem !important; }
+      .card-body.p-4 { padding: 1rem !important; }
+      .container { padding-left: 12px; padding-right: 12px; }
+      h4 { font-size: 1.1rem; }
+      h5 { font-size: 1rem; }
+
+      /* Reduce logo size on small screens */
+      .logo-img-sm { width: 80px !important; height: 80px !important; }
+
+      /* Petugas action buttons — stack vertically */
+      .btn-group-mobile-stack { flex-direction: column !important; gap: 4px; }
+      .btn-group-mobile-stack .btn { border-radius: 0.375rem !important; font-size: 0.75rem; padding: 0.3rem 0.5rem; }
+
+      /* Dashboard header compact */
+      .dashboard-header h4 { font-size: 0.95rem; }
+      .dashboard-header .badge { font-size: 0.65rem; }
+      .dashboard-header img { width: 38px !important; height: 38px !important; }
+
+      /* Tab button font */
+      .nav-link { font-size: 0.8rem; padding: 0.4rem 0.6rem; }
+
+      /* Info page heading */
+      center h1 { font-size: 1.4rem; }
+      center h3 { font-size: 1rem; }
+      center h5 { font-size: 0.85rem; }
+    }
+
+    @media (max-width: 767.98px) {
+      /* Dashboard stat cards full width on xs */
+      .stat-number { font-size: 1.5rem; }
+    }
+  </style>
+
   <!-- =======================================================
   * Template Name: NiceAdmin - v2.5.0
   * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
@@ -39,7 +95,7 @@
 
 <body>
 
-    <div class="container"><?php date_default_timezone_set('Asia/Jakarta');?>
+    <div><?php date_default_timezone_set('Asia/Jakarta');?>
 
         @yield('isi')
 

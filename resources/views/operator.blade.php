@@ -1,7 +1,12 @@
 @extends('blank')
 @section('isi')
-<div class="container">
-    <h2>Data Operator</h2>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0 fw-bold">Data Operator</h2>
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i> Dashboard Admin
+        </a>
+    </div>
     <table class="table table-hovered datatable">
         <tr>
             <th>No</th>

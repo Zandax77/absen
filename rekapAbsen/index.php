@@ -64,6 +64,7 @@ function validTanggal($tanggal)
       content="width=device-width, initial-scale=1.0">
 
 <title>Dashboard Presensi Realtime - Skanamber</title>
+<base href="/rekapAbsen/">
 
 
 <!-- GOOGLE FONT -->
@@ -316,7 +317,7 @@ body {
 
         <!-- HISTORI -->
 
-        <a href="https://absensiswa.skanamber.net/rekapAbsen/histori"
+        <a href="/rekapAbsen/histori"
            class="btn btn-histori px-4 fw-semibold shadow-sm">
 
             <i class="bi bi-clock-history me-2"></i>
@@ -2228,7 +2229,7 @@ function initCharts()
 function fetchRealtimeData()
 {
 
-    fetch('api_realtime.php')
+    fetch('/rekapAbsen/api_realtime.php')
 
     .then(
         response => response.json()

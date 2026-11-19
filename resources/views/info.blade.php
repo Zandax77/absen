@@ -3,7 +3,7 @@
 
 <center>
     <h1>Kehadiran Siswa</h1>
-    <h3><b>SMKN 6 JEMBER</b></h3><?php date_default_timezone_set('Asia/Jakarta');?>
+    <h3><b>{{ $school_name ?? 'SMKN 6 JEMBER' }}</b></h3><?php date_default_timezone_set('Asia/Jakarta');?>
     <h5>Tanggal : {{date('d/m/Y')}}</h5>
 </center>
 

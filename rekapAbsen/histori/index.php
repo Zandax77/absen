@@ -1,7 +1,7 @@
 <?php
 session_start();
-// Koneksi database - Pastikan kredensial benar
-$db = mysqli_connect('localhost','u317499974_admin_absen','w=tp~tNu6I@g','u317499974_absensiswa');
+// Koneksi database
+require_once __DIR__ . '/../konek.php';
 
 // Get filter parameters
 $awal = isset($_GET['awal']) ? $_GET['awal'] : '';
@@ -35,6 +35,7 @@ function getKetBadge($ket) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riwayat Ketidakhadiran Siswa</title>
+    <base href="/rekapAbsen/histori/">
     
     <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -93,9 +94,14 @@ function getKetBadge($ket) {
 
     <div class="container py-4">
         <!-- Header -->
-        <div class="header-section text-center text-md-start">
-            <h2 class="fw-bold mb-0"><i class="bi bi-person-x-fill me-2"></i> Riwayat Absensi</h2>
-            <p class="opacity-75 mb-0">Monitoring ketidakhadiran siswa secara real-time</p>
+        <div class="header-section d-flex justify-content-between align-items-center flex-wrap gap-2 text-center text-md-start">
+            <div>
+                <h2 class="fw-bold mb-0"><i class="bi bi-person-x-fill me-2"></i> Riwayat Absensi</h2>
+                <p class="opacity-75 mb-0">Monitoring ketidakhadiran siswa secara real-time</p>
+            </div>
+            <a href="/rekapAbsen" class="btn btn-outline-light btn-sm px-3 shadow-sm">
+                <i class="bi bi-arrow-left me-1"></i> Kembali ke Dashboard
+            </a>
         </div>
 
         <!-- Filter Form -->

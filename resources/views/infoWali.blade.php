@@ -124,7 +124,7 @@
         <div class="iframe-header">
             <i class="bi bi-graph-up"></i> Rekapitulasi Absensi Keseluruhan
         </div>
-        <iframe src="https://absensiswa.skanamber.net/rekapAbsen/" frameborder="0" width="100%" height="600px"></iframe>
+        <iframe src="{{ url('rekapAbsen') }}" frameborder="0" width="100%" height="600px"></iframe>
     </div>
 </div>
 

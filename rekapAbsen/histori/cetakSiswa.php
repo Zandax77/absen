@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$db = mysqli_connect('localhost','u317499974_admin_absen','w=tp~tNu6I@g','u317499974_absensiswa');
+require_once __DIR__ . '/../konek.php';
 
 // ==========================
 // AMBIL PARAMETER & VALIDASI

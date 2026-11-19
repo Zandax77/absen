@@ -9,7 +9,7 @@
             <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
               <div class="d-flex justify-content-center py-4">
-                <img src="{{asset('images/logo_smk6.png')}}" width="150" height="150" alt="">
+                <img src="{{asset($school_logo ?? 'images/logo_smk6.png')}}" width="150" height="150" alt="{{ $school_name ?? 'Logo' }}">
               </div><!-- End Logo -->
 
               <div class="card mb-3">
@@ -49,8 +49,14 @@
                 </div>
               </div>
 
-              <div class="credits">
-                Aplikasi Absensi Kelas
+              <div class="credits text-center">
+                <div class="fw-semibold text-dark">{{ $school_name ?? 'SMKN 6 JEMBER' }}</div>
+                <div class="text-muted small">{{ $app_title ?? 'Aplikasi Absensi Kelas' }}</div>
+                <div class="mt-2">
+                  <a href="{{ url('admin/login') }}" class="text-secondary small text-decoration-none">
+                    <i class="bi bi-shield-lock me-1"></i>Portal Admin
+                  </a>
+                </div>
               </div>
 
             </div>

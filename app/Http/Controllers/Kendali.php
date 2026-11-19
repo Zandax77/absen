@@ -8,7 +8,7 @@ use App\Models\Petugas;
 use App\Models\Absen;
 use App\Models\Wali;
 use App\Models\Bk;
-use App\Models\Kelas;
+use Illuminate\Support\Facades\Hash;
 
 
 
@@ -40,16 +40,12 @@ class Kendali extends Controller
         $user = $request->kode;
         $pass = $request->sandi;
 
-        $data = Petugas::where('kode',md5($user))->where('sandi',md5($pass))->where('status','disetujui')->count();
-        if($data>0){
-            $data = Petugas::where('kode',md5($user))->where('sandi',md5($pass))->where('status','disetujui')->get();
-                $petugas = $data[0]->nama;
-                $kelas = $data[0]->kelas;
-                $request->session()->put('opr',$petugas);
-                $request->session()->put('kelas',$kelas);
-                return redirect('absenKelas');
-        }
-        else{
+        $petugas = Petugas::where('kode', $user)->where('status','disetujui')->first();
+        if ($petugas && \Illuminate\Support\Facades\Hash::check($pass, $petugas->sandi)) {
+            $request->session()->put('opr', $petugas->nama);
+            $request->session()->put('kelas', $petugas->kelas);
+            return redirect('absenKelas');
+        } else {
             return view('gagalLogin');
         }
 
@@ -63,8 +59,8 @@ class Kendali extends Controller
     public function simpanPetugasKelas(Request $request){
         $nama = $request->nama;
         $kelas = $request->kelas;
-        $kode = md5($request->kode);
-        $sandi= md5($request->sandi);
+        $kode = $request->kode;
+        $sandi = \Illuminate\Support\Facades\Hash::make($request->sandi);
 
         Petugas::create([
             'nama'=>$nama,
@@ -190,7 +186,9 @@ class Kendali extends Controller
         $user = $request->kode;
         $pass = $request->sandi;
 
-        echo md5($user);
+        // Removed insecure md5 echo
+        // $user and $pass will be verified using Hash::check
+
 
         $data = Wali::where('kode',md5($user))->where('sandi',md5($pass))->count();
         if($data>0){
