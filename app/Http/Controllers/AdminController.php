@@ -63,7 +63,7 @@ class AdminController extends Controller
     /**
      * Dashboard terpadu Admin
      */
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $petugas = Petugas::orderBy('created_at', 'desc')->get();
         $totalPetugas = $petugas->count();
@@ -74,6 +74,28 @@ class AdminController extends Controller
         $totalWali = $walis->count();
         $totalSiswa = Siswa::count();
         $totalAbsenHariIni = Absen::whereDate('created_at', date('Y-m-d'))->count();
+
+        // Query Data Siswa dengan Filter & Pencarian
+        $siswaQuery = Siswa::query();
+        if ($request->filled('q')) {
+            $q = trim($request->q);
+            $siswaQuery->where(function($query) use ($q) {
+                $query->where('nama', 'like', "%{$q}%")
+                      ->orWhere('nis', 'like', "%{$q}%");
+            });
+        }
+        if ($request->filled('kelas')) {
+            $siswaQuery->where('kelas', $request->kelas);
+        }
+        $siswas = $siswaQuery->orderBy('kelas', 'asc')->orderBy('nama', 'asc')->paginate(15)->withQueryString();
+
+        // Ambil daftar kelas unik yang ada untuk dropdown filter dan pilihan
+        $daftarKelas = Siswa::select('kelas')
+            ->whereNotNull('kelas')
+            ->where('kelas', '!=', '')
+            ->distinct()
+            ->orderBy('kelas', 'asc')
+            ->pluck('kelas');
 
         $currentSchoolName = Setting::get('school_name', 'SMKN 6 JEMBER');
         $currentSchoolLogo = Setting::get('school_logo', 'images/logo_smk6.png');
@@ -87,6 +109,8 @@ class AdminController extends Controller
             'walis',
             'totalWali',
             'totalSiswa',
+            'siswas',
+            'daftarKelas',
             'totalAbsenHariIni',
             'currentSchoolName',
             'currentSchoolLogo',
@@ -251,6 +275,94 @@ class AdminController extends Controller
         return response()->download($file, 'template_siswa.csv', [
             'Content-Type' => 'text/csv',
         ]);
+    }
+
+    /**
+     * Simpan Data Siswa Baru (Create)
+     */
+    public function storeSiswa(Request $request)
+    {
+        $request->validate([
+            'nis'   => 'required|string|max:50|unique:siswas,nis',
+            'nama'  => 'required|string|max:255',
+            'kelas' => 'required|string|max:100',
+            'jk'    => 'required|in:L,P',
+        ], [
+            'nis.required'   => 'Nomor Induk Siswa (NIS) wajib diisi.',
+            'nis.unique'     => 'NIS sudah terdaftar untuk siswa lain.',
+            'nama.required'  => 'Nama lengkap siswa wajib diisi.',
+            'kelas.required' => 'Kelas siswa wajib diisi.',
+            'jk.required'    => 'Jenis kelamin wajib dipilih (L atau P).',
+            'jk.in'          => 'Pilihan jenis kelamin tidak valid.',
+        ]);
+
+        Siswa::create([
+            'nis'   => trim($request->nis),
+            'nama'  => trim($request->nama),
+            'kelas' => trim($request->kelas),
+            'jk'    => $request->jk,
+        ]);
+
+        return redirect(url('admin') . '?tab=siswa')->with('success', "Data siswa {$request->nama} (NIS: {$request->nis}) berhasil ditambahkan!");
+    }
+
+    /**
+     * Perbarui Data Siswa (Update)
+     */
+    public function updateSiswa(Request $request, $id)
+    {
+        $siswa = Siswa::findOrFail($id);
+
+        $request->validate([
+            'nis'   => 'required|string|max:50|unique:siswas,nis,' . $siswa->id,
+            'nama'  => 'required|string|max:255',
+            'kelas' => 'required|string|max:100',
+            'jk'    => 'required|in:L,P',
+        ], [
+            'nis.required'   => 'Nomor Induk Siswa (NIS) wajib diisi.',
+            'nis.unique'     => 'NIS sudah terdaftar untuk siswa lain.',
+            'nama.required'  => 'Nama lengkap siswa wajib diisi.',
+            'kelas.required' => 'Kelas siswa wajib diisi.',
+            'jk.required'    => 'Jenis kelamin wajib dipilih (L atau P).',
+            'jk.in'          => 'Pilihan jenis kelamin tidak valid.',
+        ]);
+
+        $siswa->update([
+            'nis'   => trim($request->nis),
+            'nama'  => trim($request->nama),
+            'kelas' => trim($request->kelas),
+            'jk'    => $request->jk,
+        ]);
+
+        return redirect(url('admin') . '?tab=siswa')->with('success', "Data siswa {$siswa->nama} berhasil diperbarui!");
+    }
+
+    /**
+     * Hapus Data Siswa Tunggal (Delete)
+     */
+    public function destroySiswa($id)
+    {
+        $siswa = Siswa::findOrFail($id);
+        $nama = $siswa->nama;
+        $nis = $siswa->nis;
+        $siswa->delete();
+
+        return redirect(url('admin') . '?tab=siswa')->with('success', "Data siswa {$nama} (NIS: {$nis}) berhasil dihapus!");
+    }
+
+    /**
+     * Hapus Data Siswa Massal (Berdasarkan Kelas atau Semua)
+     */
+    public function destroyAllSiswa(Request $request)
+    {
+        if ($request->filled('kelas')) {
+            $kelas = $request->kelas;
+            $deletedCount = Siswa::where('kelas', $kelas)->delete();
+            return redirect(url('admin') . '?tab=siswa')->with('success', "Sebanyak {$deletedCount} data siswa kelas {$kelas} berhasil dihapus!");
+        }
+
+        Siswa::truncate();
+        return redirect(url('admin') . '?tab=siswa')->with('success', 'Seluruh data siswa berhasil dikosongkan!');
     }
 
     /**

@@ -53,6 +53,12 @@ Route::middleware(['admin'])->group(function () {
     Route::get('blokir/{kode}', [Kendali::class, 'blokirUser']);
     Route::get('hapus/{kode}', [Kendali::class, 'hapusUser']);
 
+    // Manajemen Siswa (CRUD)
+    Route::post('admin/siswa', [AdminController::class, 'storeSiswa'])->name('admin.siswa.store');
+    Route::post('admin/siswa/{id}/update', [AdminController::class, 'updateSiswa'])->name('admin.siswa.update');
+    Route::get('admin/siswa/{id}/delete', [AdminController::class, 'destroySiswa'])->name('admin.siswa.destroy');
+    Route::post('admin/siswa/delete-all', [AdminController::class, 'destroyAllSiswa'])->name('admin.siswa.destroyAll');
+
     // Import Data & Unduh Template (Excel & CSV)
     Route::post('admin/wali/import', [AdminController::class, 'importWali']);
     Route::post('admin/siswa/import', [AdminController::class, 'importSiswa']);

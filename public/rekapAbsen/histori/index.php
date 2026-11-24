@@ -85,8 +85,40 @@ function getKetBadge($ket) {
             margin-top: -50px;
         }
         @media (max-width: 576px) {
-            .header-section { padding: 1.5rem 1rem; text-align: center; }
-            .date-item { width: 100%; }
+            body { overflow-x: hidden; }
+            .container { padding-left: 12px; padding-right: 12px; }
+            .header-section { 
+                padding: 1.25rem 1rem; 
+                text-align: left !important;
+                margin-bottom: 1rem;
+                border-radius: 12px;
+            }
+            .header-section h2 { font-size: 1.25rem; }
+            .header-section p { font-size: 0.8rem; }
+            .header-section a.btn { 
+                width: 100%;
+                margin-top: 0.5rem;
+                font-size: 0.78rem;
+                text-align: center;
+            }
+            .filter-card { 
+                margin-top: 0 !important; 
+                border-radius: 12px;
+            }
+            .filter-card .card-body { padding: 1rem !important; }
+            .filter-card .form-control, .filter-card .form-select {
+                font-size: 16px !important;
+            }
+            .student-card { border-radius: 12px; }
+            .student-card .card-body { padding: 0.85rem !important; }
+            .student-card h5 { font-size: 0.95rem; }
+            .date-item { 
+                font-size: 0.72rem; 
+                padding: 3px 8px;
+                border-radius: 6px;
+                display: inline-flex;
+                width: auto;
+            }
         }
     </style>
 </head>

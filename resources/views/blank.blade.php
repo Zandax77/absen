@@ -33,7 +33,23 @@
   <style>
     /* ---- Global Mobile Fixes ---- */
     * { box-sizing: border-box; }
-    body { overflow-x: hidden; }
+    body { 
+      overflow-x: hidden; 
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Prevent mobile browser zoom on form focus */
+    @media (max-width: 767.98px) {
+      input[type="text"],
+      input[type="password"],
+      input[type="email"],
+      input[type="number"],
+      input[type="date"],
+      select,
+      textarea {
+        font-size: 16px !important;
+      }
+    }
 
     /* Scrollable nav tabs on mobile */
     .nav-tabs-scroll-wrapper {
@@ -67,27 +83,48 @@
     }
 
     /* Table responsive touch */
-    .table-responsive { -webkit-overflow-scrolling: touch; }
+    .table-responsive { 
+      -webkit-overflow-scrolling: touch; 
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    /* Auth logo responsive */
+    .logo-img-auth {
+      max-width: 110px;
+      max-height: 110px;
+      height: auto;
+      width: auto;
+      object-fit: contain;
+    }
 
     /* ---- Extra small (< 576px) ---- */
     @media (max-width: 575.98px) {
-      .card-body { padding: 0.85rem !important; }
-      .card-body.p-4, .card-body.p-3 { padding: 0.85rem !important; }
-      .container { padding-left: 10px; padding-right: 10px; }
+      .card-body { padding: 0.9rem !important; }
+      .card-body.p-4, .card-body.p-3 { padding: 0.9rem !important; }
+      .container { padding-left: 12px; padding-right: 12px; }
       h4 { font-size: 1.05rem; }
       h5 { font-size: 0.95rem; }
       h6 { font-size: 0.85rem; }
 
-      /* Logo */
-      .logo-img-sm { width: 70px !important; height: 70px !important; }
+      /* Logo on auth / login */
+      .logo-img-auth {
+        max-width: 85px !important;
+        max-height: 85px !important;
+      }
+      .section.register {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+        min-height: 90vh !important;
+      }
 
       /* Tab buttons smaller */
-      .nav-link { font-size: 0.75rem !important; padding: 0.35rem 0.55rem !important; }
+      .nav-link { font-size: 0.75rem !important; padding: 0.4rem 0.65rem !important; }
 
       /* Info page heading */
-      center h1 { font-size: 1.3rem; }
-      center h3 { font-size: 0.95rem; }
-      center h5 { font-size: 0.8rem; }
+      center h1, .text-center h1 { font-size: 1.25rem !important; }
+      center h3, .text-center h3 { font-size: 0.95rem !important; }
+      center h5, .text-center h5 { font-size: 0.8rem !important; }
 
       /* Buttons: make smaller & full-width when stacked */
       .btn { font-size: 0.82rem; }
@@ -106,7 +143,7 @@
       .btn-group.btn-group-sm > .btn { border-radius: 0.375rem !important; font-size: 0.72rem; width: 100%; }
 
       /* Admin dashboard header buttons */
-      .d-flex.gap-2 .btn { font-size: 0.72rem; padding: 0.3rem 0.6rem; }
+      .d-flex.gap-2 .btn { font-size: 0.72rem; padding: 0.35rem 0.6rem; }
 
       /* Table font size */
       .table { font-size: 0.82rem; }
@@ -119,12 +156,15 @@
       }
 
       /* iframe compact */
-      .iframe-container iframe { height: 400px; }
+      .iframe-container iframe { height: 380px !important; }
 
-      /* Modal padding */
+      /* Modal styling on mobile */
+      .modal-dialog {
+        margin: 0.5rem;
+      }
       .modal-body { padding: 1rem !important; }
       .modal-footer { padding: 0.75rem !important; flex-wrap: wrap; gap: 0.4rem; }
-      .modal-footer .btn { width: 100% !important; }
+      .modal-footer .btn { width: 100% !important; margin: 0 !important; }
     }
 
     /* ---- Small to Medium (576-767px) ---- */

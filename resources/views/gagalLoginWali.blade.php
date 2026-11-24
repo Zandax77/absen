@@ -1,16 +1,30 @@
 @extends('blank')
 @section('isi')
-<div class="container">
-    <div class="card mb-3">
-        <div class="pt-4 pb-2">
-            <div class="card-body">
-                <h4 class="card-title text-center pb-0 fs-4">Proses Login Gagal!</h4>
-                <p class="text-center">Akun tidak ditemukan atau sedang menunggu persetujuan admin</p>
-                <p class="text-center small"><a href="wali" class="btn btn-warning">Kembali ke halaman <b>Login</b></a>  </p>
+<div class="container py-4 min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="row justify-content-center w-100">
+        <div class="col-12 col-sm-8 col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0 text-center p-4 rounded-4">
+                <div class="card-body p-0">
+                    <div class="mb-3">
+                        <div class="bg-danger-subtle text-danger rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
+                            <i class="bi bi-x-circle-fill fs-1"></i>
+                        </div>
+                    </div>
+                    <h4 class="fw-bold mb-2 text-danger">Login Wali Gagal!</h4>
+                    <p class="text-muted small mb-4">
+                        Kode pengguna atau kata sandi tidak cocok. Silakan periksa kembali akun Anda.
+                    </p>
+                    <div class="d-flex flex-column gap-2">
+                        <a href="{{ url('wali') }}" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm">
+                            <i class="bi bi-arrow-repeat me-1"></i> Coba Login Lagi
+                        </a>
+                        <a href="{{ url('regWaliKelas') }}" class="btn btn-outline-secondary w-100 py-2 small">
+                            Daftar Akun Wali
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
-
-

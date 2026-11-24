@@ -60,12 +60,12 @@
 
     <!-- Konten Utama -->
     <div class="card card-custom">
-        <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+        <div class="card-header bg-white border-0 pt-3 pt-sm-4 px-3 px-sm-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
-                <h4 class="fw-bold mb-0">Daftar Siswa Tidak Hadir</h4>
-                <p class="text-muted mb-0"><i class="bi bi-calendar-event"></i> Tanggal: {{date('d/m/Y')}}</p>
+                <h4 class="fw-bold mb-0 fs-5 fs-sm-4">Daftar Siswa Tidak Hadir</h4>
+                <p class="text-muted small mb-0"><i class="bi bi-calendar-event"></i> Tanggal: {{date('d/m/Y')}}</p>
             </div>
-            <button class="btn btn-warning fw-bold px-4 shadow-sm" data-bs-target="#absen" data-bs-toggle="modal">
+            <button class="btn btn-warning fw-bold px-3 px-sm-4 shadow-sm btn-sm btn-sm-md" data-bs-target="#absen" data-bs-toggle="modal">
                 <i class="bi bi-plus-lg"></i> Tambah Data
             </button>
         </div>

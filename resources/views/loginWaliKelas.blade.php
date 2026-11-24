@@ -8,8 +8,8 @@
           <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
-              <div class="d-flex justify-content-center py-4">
-                <img src="{{asset($school_logo ?? 'images/logo_smk6.png')}}" width="150" height="150" alt="{{ $school_name ?? 'Logo' }}">
+              <div class="d-flex justify-content-center py-3 py-sm-4">
+                <img src="{{asset($school_logo ?? 'images/logo_smk6.png')}}" class="logo-img-auth" alt="{{ $school_name ?? 'Logo' }}">
               </div><!-- End Logo -->
 
               <div class="card mb-3">

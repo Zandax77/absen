@@ -379,6 +379,29 @@ body {
     /* Tables */
     .table { font-size: 0.8rem; }
     .table th, .table td { padding: 0.4rem 0.35rem; }
+
+    /* Modal Mobile */
+    .modal-dialog {
+        margin: 0.5rem !important;
+    }
+    .modal-content {
+        border-radius: 16px !important;
+        overflow: hidden;
+    }
+    .modal-header.p-4, .modal-body.p-4, .modal-footer.p-4 {
+        padding: 1rem !important;
+    }
+    .modal-footer {
+        flex-direction: column !important;
+        gap: 6px !important;
+    }
+    .modal-footer .btn {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    .form-control, .form-select {
+        font-size: 16px !important;
+    }
 }
 
 @media (min-width: 576px) and (max-width: 767.98px) {
